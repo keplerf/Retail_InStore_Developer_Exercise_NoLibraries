@@ -23,8 +23,9 @@ body {
 
 .navigation {
   border-bottom: var(--nav-border-height) solid var(--color-content-light);
-  padding: 0;
-  margin: 330px 50px 0 50px;
+  padding: 0 50px;
+  max-width: 1200px;
+  margin: 330px auto 0 auto;
   justify-content: center;
   position: relative;
   gap: 50px;
@@ -79,4 +80,4 @@ body {
 .active .time {
   opacity: 1;
   transform: translateY(0);
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */
