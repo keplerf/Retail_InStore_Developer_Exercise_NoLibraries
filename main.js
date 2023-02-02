@@ -54,7 +54,6 @@ const triggers = document.querySelectorAll("#nav li");
 
 const positionHighlight = (el) => {
   hightlight.style.width = `${el.width}px`;
-  // hightlight.style.transform = `translate(${el.left}px , ${el.top}px)`;
   hightlight.style.transform = `translate(${el.left}px)`;
 };
 
