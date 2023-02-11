@@ -1,10 +1,22 @@
-import data from "/navigation.json" assert { type: "json" };
-
 const navigation = document.querySelector("#nav");
 const hightlight = document.createElement("span");
 let timeElements;
 hightlight.classList.add("highlight");
 document.body.appendChild(hightlight);
+
+// import data from "/navigation.json" assert { type: "json" };
+// import("/navigation.json", { assert: { type: "json" } }).then((data) => {
+//   init(data.default.cities);
+// });
+
+fetch("/navigation.json")
+  .then((response) => response.json())
+  .then((data) => {
+    init(data.cities);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 const createTriggers = () => {
   const triggers = document.querySelectorAll("#nav li");
@@ -68,7 +80,7 @@ const init = (list) => {
   timeElements = document.querySelectorAll("#nav li .time");
 };
 
-init(data.cities);
+// init(data.cities);
 
 setInterval(function () {
   updateTimes();
