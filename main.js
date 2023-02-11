@@ -4,14 +4,7 @@ let timeElements;
 hightlight.classList.add("highlight");
 document.body.appendChild(hightlight);
 
-fetch("/navigation.json")
-  .then((response) => response.json())
-  .then((data) => {
-    init(data.cities);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+import data from "/navigation.json" assert { type: "json" };
 
 const createTriggers = () => {
   const triggers = document.querySelectorAll("#nav li");
@@ -74,6 +67,8 @@ const init = (list) => {
   createNavigation(list);
   timeElements = document.querySelectorAll("#nav li .time");
 };
+
+init(data.cities);
 
 setInterval(function () {
   updateTimes();
