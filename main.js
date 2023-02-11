@@ -1,76 +1,44 @@
-data = {
-  cities: [
-    {
-      section: "cupertino",
-      label: "Cupertino",
-      zoneName: "America/Los_Angeles",
-    },
-    {
-      section: "new-york-city",
-      label: "New York City",
-      zoneName: "America/New_York",
-    },
-    {
-      section: "london",
-      label: "London",
-      zoneName: "America/Los_Angeles",
-    },
-    {
-      section: "amsterdam",
-      label: "Amsterdam",
-      zoneName: "Europe/Amsterdam",
-    },
-    {
-      section: "tokyo",
-      label: "Tokyo",
-      zoneName: "Asia/Tokyo",
-    },
-    {
-      section: "hong-kong",
-      label: "Hong Kong",
-      zoneName: "Asia/Hong_Kong",
-    },
-    {
-      section: "sydney",
-      label: "Sydney",
-      zoneName: "Australia/Sydney",
-    },
-  ],
-};
-
 const navigation = document.querySelector("#nav");
 const hightlight = document.createElement("span");
+let timeElements;
 hightlight.classList.add("highlight");
 document.body.appendChild(hightlight);
 
+fetch("/navigation.json")
+  .then((response) => response.json())
+  .then((data) => {
+    init(data.cities);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+const createTriggers = () => {
+  const triggers = document.querySelectorAll("#nav li");
+  triggers.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      highlightLink(e.currentTarget, triggers);
+    });
+  });
+};
 const createNavigation = (list) => {
   list.forEach((item) => {
     navigation.innerHTML += `<li><span data-timeZone="${item.zoneName}" class="time">Times </span><a href="#" >${item.label}</a> </li>`;
   });
+  createTriggers();
 };
-createNavigation(data.cities);
-
-const triggers = document.querySelectorAll("#nav li");
 
 const positionHighlight = (el) => {
   hightlight.style.width = `${el.width}px`;
   hightlight.style.transform = `translate(${el.left}px)`;
 };
 
-const highlightLink = (el) => {
+const highlightLink = (el, triggersElement) => {
   const linkCoords = el.getBoundingClientRect();
   positionHighlight(linkCoords);
-  triggers.forEach((item) => item.classList.remove("active"));
+  triggersElement.forEach((item) => item.classList.remove("active"));
   el.classList.add("active");
 };
-
-triggers.forEach((link) => {
-  link.addEventListener("click", (e) => {
-    highlightLink(e.currentTarget);
-  });
-});
-
-const timeLink = document.querySelector("#nav li .time");
 
 const resize = () => {
   const activeLink = document.querySelector("#nav li.active a");
@@ -93,16 +61,18 @@ window.addEventListener(
   })
 );
 
-const timeElements = document.querySelectorAll("#nav li .time");
-
 const updateTimes = () => {
   timeElements.forEach((location) => {
     const output = location.querySelector(".time");
     const timezone = location.getAttribute("data-timeZone");
-    console.log("timezone ", timezone);
     const now = timezone != "" ? luxon.DateTime.now().setZone(timezone) : null;
     location.innerHTML = now ? now.toFormat("HH:mm:ss") : "<br> ";
   });
+};
+
+const init = (list) => {
+  createNavigation(list);
+  timeElements = document.querySelectorAll("#nav li .time");
 };
 
 setInterval(function () {
