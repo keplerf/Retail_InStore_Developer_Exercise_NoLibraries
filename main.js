@@ -1,10 +1,10 @@
+import data from "/navigation.json" assert { type: "json" };
+
 const navigation = document.querySelector("#nav");
 const hightlight = document.createElement("span");
 let timeElements;
 hightlight.classList.add("highlight");
 document.body.appendChild(hightlight);
-
-import data from "/navigation.json" assert { type: "json" };
 
 const createTriggers = () => {
   const triggers = document.querySelectorAll("#nav li");
